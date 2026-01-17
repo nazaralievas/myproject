@@ -1,0 +1,6 @@
+
+{% for movie in movies %}
+    <a href="{% url 'movie_detail' movie.id %}">{{ movie.name }}</a>
+    <a href="{% url 'movie_detail' movie.id %}"><img width="300px" height="300px" src="{{ movie.image.url }}"> </a>
+    <br>
+{% endfor %}
