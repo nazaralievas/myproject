@@ -1,19 +1,22 @@
+{% extends 'core/base.html' %}
+{% block content %}
 <h1>{{ movie.name }}</h1>
 <p>{{ movie.description }}</p>
 <img src="{{ movie.image.url }}">
 
 <br>
 {% if user.is_authenticated %}
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Оставить комментарий</button>
-    </form>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Оставить комментарий</button>
+</form>
 {% else %}
-    <a href="{% url 'register' %}">Зарегистрируйтесь, чтобы оставить отзыв</a> <br>
-    <a href="{% url 'login' %}">либо войдите в аккаунт</a>
+<a href="{% url 'register' %}">Зарегистрируйтесь, чтобы оставить отзыв</a> <br>
+<a href="{% url 'login' %}">либо войдите в аккаунт</a>
 {% endif %}
 
 {% for comment in movie.comments.all %}
-    {{ comment.user }}: {{ comment.text }} --------- {{ comment.date_created }} <br>
+{{ comment.user }}: {{ comment.text }} --------- {{ comment.date_created }} <br>
 {% endfor %}
+{% endblock content %}
