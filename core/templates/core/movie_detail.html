@@ -1,22 +1,74 @@
 {% extends 'core/base.html' %}
-{% block content %}
-<h1>{{ movie.name }}</h1>
-<p>{{ movie.description }}</p>
-<img src="{{ movie.image.url }}">
 
-<br>
+{% block title %}{{ movie.name }}{% endblock %}
+
+{% block content %}
+
+<!-- Название фильма -->
+<h2 class="text-center text-primary fw-bold mb-4">
+    🎬 {{ movie.name }}
+</h2>
+
+<div class="row mb-5 align-items-start">
+
+    <!-- Левая колонка: картинка -->
+    <div class="col-md-5 mb-3">
+        <img src="{{ movie.image.url }}" class="img-fluid rounded shadow-sm w-100">
+    </div>
+
+    <!-- Правая колонка: описание -->
+    <div class="col-md-7">
+        <h5 class="text-secondary fw-semibold mb-2">Описание</h5>
+        <p class="text-muted fs-5">
+            {{ movie.description }}
+        </p>
+    </div>
+
+</div>
+
+<hr class="my-4">
+
+<!-- Комментарии -->
+<h4 class="text-primary fw-bold mb-3">💬 Комментарии</h4>
+
 {% if user.is_authenticated %}
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Оставить комментарий</button>
-</form>
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">
+                Оставить комментарий
+            </button>
+        </form>
+    </div>
+</div>
 {% else %}
-<a href="{% url 'register' %}">Зарегистрируйтесь, чтобы оставить отзыв</a> <br>
-<a href="{% url 'login' %}">либо войдите в аккаунт</a>
+<div class="alert alert-info">
+    <a href="{% url 'register' %}" class="fw-semibold">Зарегистрируйтесь</a>, чтобы оставить отзыв
+    <br>
+    <a href="{% url 'login' %}">Или войдите в аккаунт</a>
+</div>
 {% endif %}
 
+<!-- Список комментариев -->
 {% for comment in movie.comments.all %}
-{{ comment.user }}: {{ comment.text }} --------- {{ comment.date_created }} <br>
+<div class="card shadow-sm mb-3">
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between mb-1">
+            <strong class="text-primary">{{ comment.user }}</strong>
+            <small class="text-muted">{{ comment.date_created }}</small>
+        </div>
+
+        <p class="mb-0">
+            {{ comment.text }}
+        </p>
+
+    </div>
+</div>
+{% empty %}
+<p class="text-muted">Пока нет комментариев. Будьте первым!</p>
 {% endfor %}
+
 {% endblock content %}

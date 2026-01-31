@@ -1,8 +1,33 @@
 {% extends 'core/base.html' %}
+
+{% block title %}Главная{% endblock %}
+
 {% block content %}
-{% for movie in movies %}
-<a href="{% url 'movie_detail' movie.id %}">{{ movie.name }}</a>
-<a href="{% url 'movie_detail' movie.id %}"><img width="300px" height="300px" src="{{ movie.image.url }}"> </a>
-<br>
-{% endfor %}
+
+<h2 class="mb-4 text-primary fw-bold">🎬 Фильмы</h2>
+
+<div class="row g-4">
+    {% for movie in movies %}
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-0">
+
+            <a href="{% url 'movie_detail' movie.id %}">
+                <img src="{{ movie.image.url }}" class="card-img-top" style="height: 300px; object-fit: cover;">
+            </a>
+
+            <div class="card-body text-center">
+                <h5 class="card-title fw-semibold">
+                    {{ movie.name }}
+                </h5>
+
+                <a href="{% url 'movie_detail' movie.id %}" class="btn btn-primary btn-sm mt-2">
+                    Подробнее
+                </a>
+            </div>
+
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
 {% endblock content %}
